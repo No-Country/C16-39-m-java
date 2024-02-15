@@ -1,4 +1,4 @@
 package com.c1639.backend.mapper;
 
-public class userMapping {
+public class UserMapper {
 }
