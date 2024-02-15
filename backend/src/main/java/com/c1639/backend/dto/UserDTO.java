@@ -1,4 +1,4 @@
 package com.c1639.backend.dto;
 
-public class userDTO {
+public class UserDTO {
 }
