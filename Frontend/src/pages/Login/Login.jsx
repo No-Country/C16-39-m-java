@@ -40,12 +40,12 @@ const Login = () => {
           autoComplete="off"
           className="space-y-4"
         >
-          <div>
+          <div className="w-full max-w-md">
             <label htmlFor="Email" className="block">
               
             </label>
             <input
-              type="email"
+              type="text"
               name="email"
               autoComplete="off"
               placeholder="Ingrese su email"
@@ -58,10 +58,10 @@ const Login = () => {
               })}
               className="block w-full p-2 border-b border-gray-300 bg-transparent mt-1"
             />
-            {errors.email && <span>{errors.email.message}</span>}
+            {errors.email && <span className="text-red-500">{errors.email.message}</span>}
           </div>
 
-          <div>
+          <div className="w-full max-w-md">
             <label htmlFor="Password" className="block">
               
             </label>
@@ -81,7 +81,7 @@ const Login = () => {
               className="block w-full p-2 border-b border-gray-300 bg-transparent mt-1"
             />
             {errors.password && (
-              <p>{errors.password.message}</p>
+              <span className="text-red-500">{errors.password.message}</span>
             )}
           </div>
           <input
