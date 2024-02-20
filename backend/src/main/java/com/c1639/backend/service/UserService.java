@@ -12,6 +12,7 @@ import com.c1639.backend.model.user.User;
 import com.c1639.backend.repository.UserRepository;
 import com.c1639.backend.security.PasswordEncoder;
 import com.c1639.backend.security.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,7 @@ public class UserService {
     public UserSignedUpDto signUp(UserToSignUpDto userToSignUpDto) {
 
         //Check if the user already exists
-        if (userRepository.existsByEmail(userToSignUpDto.email()))
+        if (userRepository.existsByEmailAndActiveIsTrue(userToSignUpDto.email()))
             throw new UserAlreadyExistsException("El usuario ya existe en la base de datos");
 
         // Get the plain password
@@ -70,7 +71,7 @@ public class UserService {
         String userEmail = userToLoginDto.email();
 
         // Check if the user exists
-        if (!userRepository.existsByEmail(userEmail))
+        if (!userRepository.existsByEmailAndActiveIsTrue(userEmail))
             throw new UserNotFoundException("El usuario no existe en la base de datos");
 
         // Get hashed password from the database
@@ -98,5 +99,23 @@ public class UserService {
           authUser.getEmail(),
           token
         );
+    }
+
+    //Get user by token
+    public UserSignedUpDto getUser(HttpServletRequest request) {
+
+        User user = getUserFromDatabase(request);
+
+        return userMapper.userToUserSignedUpDto(user);
+    }
+
+    private User getUserFromDatabase(HttpServletRequest request) {
+        String token = tokenService.getTokenFromHeader(request); //Get token from the header
+        String userEmail = tokenService.getVerifier(token).getSubject(); //Get the user email from the token
+
+        if (!userRepository.existsByEmailAndActiveIsTrue(userEmail))
+            throw new UserNotFoundException("User not found in the database");
+
+        return (User) userRepository.findByEmailAndActiveTrue(userEmail);
     }
 }

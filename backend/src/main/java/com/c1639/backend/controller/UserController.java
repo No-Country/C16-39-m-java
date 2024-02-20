@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class UserController {
       @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
       @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content})
     })
+    @SecurityRequirements()
     @GetMapping("/welcome")
     public ResponseEntity<String> getUser() {
         return ResponseEntity
@@ -103,5 +105,27 @@ public class UserController {
         return ResponseEntity
           .status(HttpStatus.OK)
           .body(userService.login(userToLoginDto));
+    }
+
+    @Operation(
+      summary = "User gets its data using auth token.",
+      description = "Let a logged user get its data using the authorization token."
+    )
+    @ApiResponses(value = {
+      @ApiResponse(
+        responseCode = "200", description = "User found successfully.",
+        content = {
+          @Content(mediaType = "application/json",
+            schema = @Schema(implementation = UserSignedUpDto.class))
+        }),
+      @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
+      @ApiResponse(responseCode = "404", description = "User Not Found", content = {@Content}),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
+    })
+    @GetMapping("/me")
+    public ResponseEntity<UserSignedUpDto> getUser(HttpServletRequest request) {
+        return ResponseEntity
+          .status(HttpStatus.OK)
+          .body(userService.getUser(request));
     }
 }

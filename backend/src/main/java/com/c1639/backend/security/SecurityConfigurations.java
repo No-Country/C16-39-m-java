@@ -1,10 +1,11 @@
 package com.c1639.backend.security;
 
+import com.c1639.backend.model.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,17 +26,29 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-          .cors(Customizer.withDefaults())
+//          .cors(Customizer.withDefaults())
           .csrf(AbstractHttpConfigurer::disable)
           .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
+              .requestMatchers(HttpMethod.OPTIONS)
+                .permitAll()
+              .requestMatchers(HttpMethod.GET, "/users/welcome")
+                .permitAll()
+              .requestMatchers(HttpMethod.GET, "/users/me")
+                .hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+              .requestMatchers(HttpMethod.POST, "/users/auth")
+                .permitAll()
               .requestMatchers("/api-docs/**", "api-docs.yaml")
                 .permitAll()
               .requestMatchers("/swagger-ui-custom.html", "/swagger-ui/**", "/swagger-ui/")
                 .permitAll()
-              .anyRequest()
+              .requestMatchers(HttpMethod.GET, "/users")
+                .hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+              .requestMatchers(HttpMethod.POST, "/users")
                 .permitAll()
+              .anyRequest()
+                .authenticated()
           )
           .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
           .build();
