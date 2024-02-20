@@ -31,15 +31,12 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
-<!--<<<<<<< HEAD-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--=======
->>>>>>> a826ce8890120f2668f801aa58f32dba279d747a-->
 
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -100,6 +97,11 @@
 			<version>2.3.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.4.0</version>
+		</dependency>
 
 	</dependencies>
 

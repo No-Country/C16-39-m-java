@@ -1,14 +1,21 @@
 package com.c1639.backend.service;
 
+import com.c1639.backend.dto.user.LoggedUserDto;
 import com.c1639.backend.dto.user.UserSignedUpDto;
+import com.c1639.backend.dto.user.UserToLoginDto;
 import com.c1639.backend.dto.user.UserToSignUpDto;
 import com.c1639.backend.exception.user.UserAlreadyExistsException;
+import com.c1639.backend.exception.user.UserNotFoundException;
 import com.c1639.backend.mapper.user.UserMapper;
 import com.c1639.backend.model.user.Role;
 import com.c1639.backend.model.user.User;
 import com.c1639.backend.repository.UserRepository;
 import com.c1639.backend.security.PasswordEncoder;
+import com.c1639.backend.security.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +24,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     public String welcome() {
         return "Welcome to the User Service";
@@ -53,5 +62,41 @@ public class UserService {
         // Map the entity data to a DTO and return it
         return userMapper.userToUserSignedUpDto(userDB);
 
+    }
+
+    public LoggedUserDto login(UserToLoginDto userToLoginDto) {
+
+        // Get the user email
+        String userEmail = userToLoginDto.email();
+
+        // Check if the user exists
+        if (!userRepository.existsByEmail(userEmail))
+            throw new UserNotFoundException("El usuario no existe en la base de datos");
+
+        // Get hashed password from the database
+        String hashedPassword = userRepository.findByEmailAndActiveTrue(userEmail).getPassword();
+
+        // Check if the password is correct
+        boolean passwordMatches = PasswordEncoder.verifyPassword(userToLoginDto.password(), hashedPassword);
+
+        if (!passwordMatches)
+            throw new UserNotFoundException("El email o la contraseña es incorrecta.");
+
+        // Auth Credentials
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+            userToLoginDto.email(),
+            userToLoginDto.password()
+        );
+
+        // Generate the token
+        User authUser = (User) authenticationManager.authenticate(auth).getPrincipal();
+        String token = tokenService.generateToken(authUser);
+
+        return new LoggedUserDto(
+          authUser.getId(),
+          authUser.getName(),
+          authUser.getEmail(),
+          token
+        );
     }
 }
