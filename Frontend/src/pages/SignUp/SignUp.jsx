@@ -1,49 +1,97 @@
-//import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import img from './assets/background-signup.png'
+import logo from './assets/logo.png'
+import axios from 'axios'
 
 const SignUp = () => {
 
+    const navigate = useNavigate()
+
+    const [toast, setToast] = useState(false)
+    const [messageToast, setMessageToast] = useState('')
+    const [success, setSuccess] = useState(false)
+
+    const backgroundImage = `url(${img})`
+
     const { handleSubmit, register, formState: { errors }, reset } = useForm()
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        try {
+            const result = await axios.post('https://movies-apirest-c77e9f5e2ba2.herokuapp.com/users', data)
+            const responseData = result.data
+
+            const successMessage = responseData.active ? 'Registro Exitoso' : 'Ha ocurrido un error al registrar tu cuenta. Por favor, intenta nuevamente.'
+
+            setSuccess(responseData.active)
+            setMessageToast(successMessage)
+            setToast(true)
+            setTimeout(() => {
+                setToast(false)
+                if (responseData.active) {
+                    navigate('/login')
+                }
+            }, 1500)
+        } catch (error) {
+            setToast(true)
+            setSuccess(false)
+            setMessageToast('Error en el servidor. Por favor, intenta más tarde.')
+            setTimeout(() => {
+                setToast(false)
+            }, 3000)
+        }
+
         reset()
-	}
+    }
 
     return (
-        <section className='px-6 h-screen bg-[#191919] flex justify-center items-center lg:px-0'>
-            <div className='hidden h-full lg:block w-[75%]'>
-               {/* <img className='w-full' src="" alt="Logo de la app" /> */}
-                <div className='h-full w-full bg-blue-300'></div>
+        <section className='px-4 h-screen bg-[#191919] flex justify-center items-center md:px-0'>
+            <div className={`absolute mx-3 text-center py-2 px-4 rounded-md z-30 transition-all ${toast ? 'top-3' : '-top-full'} ${success ? 'bg-green-500' : 'bg-red-500'}`}>
+                <span className='text-white text-sm font-medium lg:text-base'>{messageToast}</span>
             </div>
-            <div className='w-full flex justify-center items-center md:w-[50%]'>
-                <form method='post' onSubmit={ handleSubmit(onSubmit) } className='text-center w-full lg:w-[60%]'>
+            <div style={{ backgroundImage }} className='relative hidden h-full bg-center bg-cover md:block w-[75%]'>
+                <div className='absolute inset-0 bg-[#000000]/75'></div>
+                <img className='absolute -top-2 -left-4 w-40 object-cover' src={logo} alt="Logo de la app" />
+                <div className='absolute left-8 bottom-32 text-white space-y-3 z-20 xl:bottom-36'>
+                    <h3 className='font-medium text-xl xl:text-2xl'>Beneficios de tu cuenta gratuita</h3>
+                    <div>
+                        <p className='text-sm font-medium xl:text-base'>Descubre más de 1000 películas.</p>
+                        <small>Puedes ver toda la información acerca de las películas.</small>
+                    </div>
+                    <div>
+                        <p className='text-sm font-medium xl:text-base'>Tus favoritos.</p>
+                        <small>Guarda tus películas favoritas.</small>
+                    </div>
+                </div>
+            </div>
+            <div className='w-full px-4 flex justify-center items-center md:w-[50%] lg:px-0'>
+                <form method='post' onSubmit={handleSubmit(onSubmit)} className='text-center mt-8 w-full lg:w-[60%]'>
                     <h2 className='text-[#FEFEFE] text-xl mb-8'>Crea una cuenta</h2>
                     <div className=' flex flex-col items-center space-y-2 '>
                         <label htmlFor="name"></label>
-                        <input 
-                            className='input-signup' 
+                        <input
+                            className='input-signup'
                             placeholder='Nombre'
                             autoComplete='off'
-                            type="text" 
-                            name="name" 
-                            id="name" 
+                            type="text"
+                            name="name"
+                            id="name"
                             {...register('name', {
                                 required: 'Este campo es obligatorio',
                                 minLength: { value: 3, message: 'El nombre debe tener entre 3 y 25 caracteres' },
                                 maxLength: { value: 25, message: 'El nombre no debe superar los 25 caracteres' },
                             })}
                         />
-                        <span className='text-xs text-start w-full text-red-500 pb-3 xl:text-sm'>{errors.name && errors.name.message}</span>
+                        <span className='text-xs text-start w-full text-red-600 pb-3 xl:text-sm'>{errors.name && errors.name.message}</span>
                         <label htmlFor="email"></label>
-                        <input  
-                            className='input-signup' 
+                        <input
+                            className='input-signup'
                             placeholder='Dirección de correo electrónico'
                             autoComplete='off'
-                            type="email" 
-                            name="email" 
-                            id="email" 
+                            type="email"
+                            name="email"
+                            id="email"
                             {...register('email', {
                                 required: 'Este campo es obligatorio',
                                 pattern: {
@@ -52,25 +100,25 @@ const SignUp = () => {
                                 },
                             })}
                         />
-                        <span className='text-xs text-start w-full text-red-500 pb-3 xl:text-sm'>{errors.email && errors.email.message}</span>
+                        <span className='text-xs text-start w-full text-red-600 pb-3 xl:text-sm'>{errors.email && errors.email.message}</span>
                         <label htmlFor="password"></label>
-                        <input 
+                        <input
                             className='input-signup'
-                            placeholder='Contraseña' 
+                            placeholder='Contraseña'
                             autoComplete='off'
-                            type="password" 
-                            name="password" 
-                            id="password" 
+                            type="password"
+                            name="password"
+                            id="password"
                             {...register('password', {
                                 required: 'Este campo es obligatorio',
                                 minLength: { value: 8, message: 'La contraseña debe tener entre 8 y 25 caracteres' },
                                 maxLength: { value: 25, message: 'La contraseña no debe superar los 25 caracteres' },
                             })}
                         />
-                        <span className='text-xs text-start w-full text-red-500 pb-3 xl:text-sm'>{errors.password && errors.password.message}</span>
+                        <span className='text-xs text-start w-full text-red-600 pb-3 xl:text-sm'>{errors.password && errors.password.message}</span>
                         <div className=' pt-3 space-y-7 lg:w-full'>
-                            <input className=' bg-[#F5F5F5] rounded-lg text-black w-full py-2 font-medium text-sm' type="submit" value="Crear cuenta" />
-                            <p className='text-xs text-white'>¿Ya tienes una cuenta? <Link to='/login' className=' text-blue-500'>Inicia sesión</Link></p>
+                            <input className=' bg-[#F5F5F5] cursor-pointer rounded-lg text-black w-full py-2 font-medium text-sm' type="submit" value="Crear cuenta" />
+                            <p className='text-xs text-white'>¿Ya tienes una cuenta? <Link to='/login' className=' text-blue-500 hover:underline'>Inicia sesión</Link></p>
                         </div>
                     </div>
                 </form>
