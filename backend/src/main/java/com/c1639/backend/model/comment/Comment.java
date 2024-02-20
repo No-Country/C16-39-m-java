@@ -1,4 +1,4 @@
-package com.c1639.backend.model;
+package com.c1639.backend.model.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
