@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Comment")
@@ -18,10 +18,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private Integer review;
 
 
-    public Comment(Long id) {
+
+    public Comment(String content) {
+        this.content = content;
+    }
+
+    public Comment() {
         this.id = id;
     }
 }
