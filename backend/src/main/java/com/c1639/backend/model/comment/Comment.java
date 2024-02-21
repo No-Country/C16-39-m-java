@@ -20,7 +20,6 @@ public class Comment {
     private String content;
 
 
-
     public Comment(String content) {
         this.content = content;
     }

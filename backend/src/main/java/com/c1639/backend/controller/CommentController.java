@@ -1,4 +1,5 @@
 package com.c1639.backend.controller;
+
 import com.c1639.backend.dto.comment.CommentDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +11,8 @@ import com.c1639.backend.model.comment.Comment;
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
+
+
 public class CommentController {
 
     @PostMapping
@@ -18,18 +21,23 @@ public class CommentController {
             description = "Allows the user to create a comment as long as they have a review."
     )
     public Comment createComment(@RequestBody CommentDto comment) {
-        return comment;
+        return Comment;
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update a comment by ID")
+    @Operation(summary = "Update a comment by ID",
+            description = "Allows user to update a comment by ID"
+    )
     public Comment updateComment(@PathVariable int id, @RequestBody CommentDto updatedComment) {
 
         return updatedComment;
     }
 
     @GetMapping("/{id}")
-    @ApiDescripcio(value = "Get a comment by ID")
+    @Operation(summary = "Update a comment by ID",
+            description = "Allows the user to search by ID"
+    )
+
     public Comment getCommentById(@PathVariable int id) {
         Comment comment = new Comment();
         comment.setId(id);
