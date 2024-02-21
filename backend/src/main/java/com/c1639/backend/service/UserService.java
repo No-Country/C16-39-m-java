@@ -5,6 +5,7 @@ import com.c1639.backend.dto.user.UserSignedUpDto;
 import com.c1639.backend.dto.user.UserToLoginDto;
 import com.c1639.backend.dto.user.UserToSignUpDto;
 import com.c1639.backend.exception.user.UserAlreadyExistsException;
+import com.c1639.backend.exception.user.UserDataLoginException;
 import com.c1639.backend.exception.user.UserNotFoundException;
 import com.c1639.backend.mapper.user.UserMapper;
 import com.c1639.backend.model.user.Role;
@@ -81,7 +82,7 @@ public class UserService {
         boolean passwordMatches = PasswordEncoder.verifyPassword(userToLoginDto.password(), hashedPassword);
 
         if (!passwordMatches)
-            throw new UserNotFoundException("El email o la contraseña es incorrecta.");
+            throw new UserDataLoginException("El email o la contraseña es incorrecta.");
 
         // Auth Credentials
         Authentication auth = new UsernamePasswordAuthenticationToken(
