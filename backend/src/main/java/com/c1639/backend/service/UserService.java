@@ -95,6 +95,7 @@ public class UserService {
         String token = tokenService.generateToken(authUser);
 
         return new LoggedUserDto(
+          false,
           authUser.getId(),
           authUser.getName(),
           authUser.getEmail(),
