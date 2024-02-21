@@ -1,8 +1,8 @@
 package com.c1639.backend.dto.comment;
 
-public class CommentDto {
+public record CommentDto() {
 
-    private String content;
+    private static String content;
 
     public String getContent() {
         return content;
