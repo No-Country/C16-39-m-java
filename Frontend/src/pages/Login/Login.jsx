@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import axios from "axios"
 //import backgroundImage from "./background.png";
 import fondoPortada from "./images/fondoPortada.png"
 import logo4 from "./images/logo4.png"
@@ -14,9 +15,26 @@ const Login = () => {
   } = useForm();
 
   //recibimos los datos del formulario
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
     console.log(errors);
+
+    
+    try {
+
+
+      const serverProd = 'https://movies-apirest-c77e9f5e2ba2.herokuapp.com'
+      const path = '/users/auth'
+      //const response = await axios.post ('https://movies-apirest-c77e9f5e2ba2.herokuapp.com/users/auth',data);
+      const fullURL = await axios.post (`${serverProd}${path}`,data)
+      const result= fullURL.data;
+      console.log(result);
+      return result
+
+    } catch (error) {
+      console.error("Error login user:", error);
+          alert("Error login user. Please try again.");
+    }
   };
 
   // const watchEmail = watch("email");
