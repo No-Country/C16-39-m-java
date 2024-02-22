@@ -1,6 +1,6 @@
 package com.c1639.backend.repository;
 
-import com.c1639.backend.model.Movie;
+import com.c1639.backend.model.movie.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

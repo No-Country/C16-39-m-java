@@ -1,6 +1,6 @@
 package com.c1639.backend.service;
 
-import com.c1639.backend.model.Movie;
+import com.c1639.backend.model.movie.Movie;
 import com.c1639.backend.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,8 @@
-package com.c1639.backend.model;
+package com.c1639.backend.model.movie;
 
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import nonapi.io.github.classgraph.json.Id;
@@ -15,7 +12,7 @@ import java.sql.Date;
 @Entity
 @Data
 @RequiredArgsConstructor
-
+@Table(name="Movie")
 
 public class Movie {
 

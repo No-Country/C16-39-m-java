@@ -7,6 +7,4 @@ public record MovieDTO(Integer id,
                        String title,
                        boolean active,
                        String overview) {
-
-
 }
