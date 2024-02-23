@@ -4,7 +4,11 @@ import axios from "axios"
 import fondoPortada from "./images/fondoPortada.png"
 import logo4 from "./images/logo4.png"
 
+import {useNavigate} from "react-router-dom"
+
 const Login = () => {
+
+  const navigate = useNavigate();
   // register nos sirve para registrar los campos y validaciones
   //handleSubmit: para el envio de formulario
   const {
@@ -29,6 +33,9 @@ const Login = () => {
       const fullURL = await axios.post (`${serverProd}${path}`,data)
       const result= fullURL.data;
       console.log(result);
+
+    navigate("/home");
+
       return result
 
     } catch (error) {
