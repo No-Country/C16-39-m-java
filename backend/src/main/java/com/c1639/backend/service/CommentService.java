@@ -1,5 +1,6 @@
 package com.c1639.backend.service;
 
+import com.c1639.backend.exception.comment.CommentNotFoundException;
 import com.c1639.backend.model.comment.Comment;
 import com.c1639.backend.dto.comment.CommentDto;
 import com.c1639.backend.repository.CommentRepository;
@@ -24,7 +25,7 @@ public class CommentService {
 
     public Comment updateComment(Long id, CommentDto updatedCommentDto) {
         Comment existingComment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Comment with id " + id + " not found"));
+                .orElseThrow(() -> new CommentNotFoundException("Comment with id " + id + " not found"));
         existingComment.setContent(updatedCommentDto.getContent());
         return commentRepository.save(existingComment);
     }
@@ -33,4 +34,6 @@ public class CommentService {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Comment with id " + id + " not found"));
     }
+
+
 }
