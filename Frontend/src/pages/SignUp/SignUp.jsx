@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import img from './assets/background-signup.png'
-import logo from './assets/logo.png'
+import logo from './assets/logo-moviepulse.png'
 import axios from 'axios'
 
 const SignUp = () => {
@@ -12,6 +12,7 @@ const SignUp = () => {
     const [toast, setToast] = useState(false)
     const [messageToast, setMessageToast] = useState('')
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const backgroundImage = `url(${img})`
 
@@ -19,6 +20,7 @@ const SignUp = () => {
 
     const onSubmit = async (data) => {
         try {
+            setLoading(true)
             const result = await axios.post('https://movies-apirest-c77e9f5e2ba2.herokuapp.com/users', data)
             const responseData = result.data
 
@@ -28,12 +30,14 @@ const SignUp = () => {
             setMessageToast(successMessage)
             setToast(true)
             setTimeout(() => {
+                setLoading(false)
                 setToast(false)
                 if (responseData.active) {
                     navigate('/login')
                 }
-            }, 1500)
+            }, 2500)
         } catch (error) {
+            setLoading(false)
             setToast(true)
             setSuccess(false)
             setMessageToast('Error en el servidor. Por favor, intenta más tarde.')
@@ -52,7 +56,7 @@ const SignUp = () => {
             </div>
             <div style={{ backgroundImage }} className='relative hidden h-full bg-center bg-cover md:block w-[75%]'>
                 <div className='absolute inset-0 bg-[#000000]/75'></div>
-                <img className='absolute -top-2 -left-4 w-40 object-cover' src={logo} alt="Logo de la app" />
+                <img className='absolute w-32' src={logo} alt="Logo de la app" />
                 <div className='absolute left-8 bottom-32 text-white space-y-3 z-20 xl:bottom-36'>
                     <h3 className='font-medium text-xl xl:text-2xl'>Beneficios de tu cuenta gratuita</h3>
                     <div>
@@ -117,7 +121,11 @@ const SignUp = () => {
                         />
                         <span className='text-xs text-start w-full text-red-600 pb-3 xl:text-sm'>{errors.password && errors.password.message}</span>
                         <div className=' pt-3 space-y-7 lg:w-full'>
-                            <input className=' bg-[#F5F5F5] cursor-pointer rounded-lg text-black w-full py-2 font-medium text-sm' type="submit" value="Crear cuenta" />
+                            <button type='submit' className=' flex justify-center items-center cursor-pointer rounded-lg text-black bg-[#F5F5F5] py-2 font-medium text-sm w-full'>Crear cuenta
+                                {
+                                    loading && <span className="loading loading-spinner loading-sm ml-4"></span>
+                                }
+                            </button>
                             <p className='text-xs text-white'>¿Ya tienes una cuenta? <Link to='/login' className=' text-blue-500 hover:underline'>Inicia sesión</Link></p>
                         </div>
                     </div>
