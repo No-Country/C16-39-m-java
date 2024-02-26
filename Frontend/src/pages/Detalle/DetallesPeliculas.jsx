@@ -1,8 +1,7 @@
 
 import { useEffect, useState } from "react";
 import '../Detalle/DetallesPeliculas.css';
-
-const ApiPeliculas = () => {
+const DetallesPeliculas = () => {
   const [info, setInfo] = useState(null);
   const [actores, setActores] = useState([]);
   const [anoEstreno, setAnoEstreno] = useState(null);
@@ -16,7 +15,7 @@ const ApiPeliculas = () => {
   useEffect(() => {
     const obtenerInfo = async () => {
       try {
-        const response = await fetch("https://api.themoviedb.org/3/movie/507?/language=es-ES&page=1&api_key=7f47a04aea07f5a9052e22b90e30f835");
+        const response = await fetch("https://api.themoviedb.org/3/movie/505?/language=es-ES&page=1&api_key=7f47a04aea07f5a9052e22b90e30f835");
         const data = await response.json();
 
         const infoData = {
@@ -135,4 +134,4 @@ const ApiPeliculas = () => {
   );
 }
 
-export default ApiPeliculas;
+export default DetallesPeliculas;
