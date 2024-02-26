@@ -1,10 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+}
+
+@layer components {
+  /* Sign Up */
+    .input-signup {
+      @apply w-full bg-transparent border border-slate-400 outline-none border-x-transparent border-b-[#474747] border-t-transparent text-[#d1d1d1] pb-2 text-sm
+    }
+  /**********/
+  
 }
