@@ -1,18 +1,18 @@
 package com.c1639.backend.model.review;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.c1639.backend.model.comment.Comment;
+import com.c1639.backend.model.movie.Movie;
+import com.c1639.backend.model.user.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
 import java.time.LocalDateTime;
 @Entity
-@Table(name = "review")
+@Table (name = "review")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,9 +22,10 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long idUser;
-    private Long idMovie;
+    private User user;
+    private Movie movie;
     private Integer rate;
+    private Comment comment;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
