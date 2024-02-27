@@ -18,16 +18,16 @@ public class ReviewService {
     }
 
     public Review updateReview(Long id, Review updatedReview){
-        Review review = reviewRepository.findById(id);
-        review.setRate(updatedReview.getRate);
+        Review review = reviewRepository.getReferenceById(id);
+        review.setRate(updatedReview.getRate());
         return reviewRepository.save(review);
     }
 
-    public List<Review>(getAllReviews(){
+    public List<Review>getAllReviews(){
         return reviewRepository.findAll();
     }
 
     public Review getById(Long id){
-        return reviewRepository.findById(id);
+        return reviewRepository.getReferenceById(id);
     }
 }

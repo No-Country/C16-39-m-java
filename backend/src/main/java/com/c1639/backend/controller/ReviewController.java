@@ -38,7 +38,7 @@ public class ReviewController {
                             @Content(mediaType = "aplication/json",
                                     schema = @Schema(implementation = ListReviewsDTO.class))
                     }
-            )
+            ),
             @ApiResponse(responseCode = "400", description = "Cannot retrieve all reviews", content = {@Content}),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content}),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
@@ -46,6 +46,6 @@ public class ReviewController {
     @GetMapping("/getAllReviews")
     public ResponseEntity<List<Review>> getAlReviews(){
         List<Review> reviews = reviewService.getAllReviews();
-        return new ResponseEntity.ok(reviews);
+        return ResponseEntity.ok(reviews);
     }
 }
