@@ -41,15 +41,6 @@ public class ApplicationExceptionHandler {
 
     }
 
-    // General Exception
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApplicationExceptionResponse> genericException(Exception ex, HttpServletRequest req) {
-        Map<String, String> errors = new HashMap<>(Map.of(ex.getClass().getSimpleName(), ex.getMessage()));
-        ApplicationExceptionResponse errorResponse = ExceptionUtils.createResponse(HttpStatus.BAD_REQUEST, req, errors);
-        return ResponseEntity.status(400).body(errorResponse);
-
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
