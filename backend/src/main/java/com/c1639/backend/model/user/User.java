@@ -1,5 +1,6 @@
 package com.c1639.backend.model.user;
 
+import com.c1639.backend.model.review.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,33 @@ public class User implements UserDetails {
     private Role role;
 
     private boolean active;
+
+    /*One User has many Reviews (A user row can be referenced by multiple review rows)
+    * The "user_id" column in the "review" table column maps this relationship via a foreign key that references the primary key of the "users" table.
+    * A Review cannot exist without a User, so the CascadeType.ALL and orphanRemoval = true options are set to ensure
+    * that the Review entity is deleted when the User entity is deleted.
+    * The `User` entity is the parent side of the relationship, so it is the owning side of the relationship.
+    * While the `Review` entity is the child side of the relationship, so it is the inverse side of the relationship.
+    * */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
+    //****** Helper Methods: Keep Both Sides of the Association in SYNC.********/
+
+    /** Add a review to the list of reviews
+     * @param review the review to add */
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.setUser(this);
+    }
+
+    /** Remove a review from the list of reviews
+     * @param review the review to remove */
+    public void removeReview(Review review) {
+        review.setUser(null);
+        this.reviews.remove(review);
+    }
+    //********************End Helper Methods********************************************/
 
     @Override
     public boolean equals(Object o) {
