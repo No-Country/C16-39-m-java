@@ -4,8 +4,10 @@ import com.c1639.backend.model.review.Review;
 import com.c1639.backend.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +20,14 @@ public class ReviewService {
     }
 
     public Review updateReview(Long id, Review updatedReview){
-        Review review = reviewRepository.getReferenceById(id);
-        review.setRate(updatedReview.getRate());
-        return reviewRepository.save(review);
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            review.setRate(updatedReview.getRate());
+            return reviewRepository.save(review);
+        } else {
+            throw new NotFoundException("Review not found with id: " + id);
+        }
     }
 
     public List<Review>getAllReviews(){
@@ -28,6 +35,11 @@ public class ReviewService {
     }
 
     public Review getById(Long id){
-        return reviewRepository.getReferenceById(id);
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isPresent()) {
+            return reviewRepository.getReferenceById(id);
+        } else {
+            throw new NotFoundException("Review not found with id: " + id);
+        }
     }
 }
