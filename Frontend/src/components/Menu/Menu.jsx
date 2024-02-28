@@ -38,12 +38,12 @@ const Menu = () => {
             </aside>
             {/* Menu Mobile */}
             <aside className='fixed bottom-0 h-14 w-full rounded-t-lg py-3 bg-[#212121] text-[#b9b9b9] flex justify-around items-center font-medium z-50 lg:hidden'>
-                <dialog id="my_modal_1" className={`modal rounded-lg bg-[#313338] px-6 py-5`}>
-                    <div className="modal-box">
-                        <h3 className="font-medium text-lg text-[#EAEBEE]">Cerrar sesión</h3>
-                        <p className="py-3 text-[#cfcfcf] text-sm">¿Seguro que quieres cerrar sesión?</p>
+                <dialog id="my_modal_1" className={`modal rounded-lg bg-[#20201f60] px-6 py-5`}>
+                    <div className="modal-box bg-[#444444]">
+                        <h3 className="font-medium text-lg text-[#fff]">Cerrar sesión</h3>
+                        <p className="py-3 text-[#fff] text-sm">¿Seguro que quieres cerrar sesión?</p>
                         <div className=' pt-3 flex justify-end space-x-5 text-xs text-white'>
-                            <button onClick={() => document.getElementById('my_modal_1').close()} className='btn hover:underline'>Cancelar</button>
+                            <button onClick={() => document.getElementById('my_modal_1').close()} className='hover:underline'>Cancelar</button>
                             <NavLink to='/login' className='bg-red-500 p-2 rounded-md'>Cerrar sesión</NavLink>
                         </div>
                     </div>
