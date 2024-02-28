@@ -15,7 +15,10 @@ function App() {
 			<Routes>
 				<Route path="/login" element= {<Login/>}/>
 				<Route path="/sign-up" element= {<SignUp />}/>
-				<Route path ="/home" element= {<Home/>}/>
+				<Route path='/Detalle/:id' element= {<LayoutDashboard><DetallesPeliculas/></LayoutDashboard>}/>
+				<Route path="*" element= {<PaginaNoEncontrada/>}/>
+				<Route path ="/" element= {<LayoutDashboard><Home/></LayoutDashboard>}/>
+				<Route path ="/top-ranking" element= {<LayoutDashboard><TopRanking/></LayoutDashboard>}/>
 			</Routes>
 	
 	);
