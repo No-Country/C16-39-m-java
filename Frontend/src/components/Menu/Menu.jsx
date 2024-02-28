@@ -15,15 +15,15 @@ const Menu = () => {
                 <div className='flex flex-col items-center w-full justify-between'>
                     <img className='w-44' src={img} alt="logo de la app" />
                     <div className='w-full mt-5 space-y-6 font-medium'>
-                        <NavLink to='/dashboard' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221e3] hover:text-white'>
+                        <NavLink to='/' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221f1] hover:text-white'>
                             <GoHome className=' text-xl mr-3' />
                             <small className=' text-[.8rem]'>Inicio</small>
                         </NavLink>
-                        <NavLink to='/top-ranking' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221e3] hover:text-white'>
+                        <NavLink to='/top-ranking' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221f1] hover:text-white'>
                             <BiCameraMovie className=' text-xl mr-3' />
-                            <small className=' text-[.8rem]'>Top ranking</small>
+                            <small className=' text-[.8rem]'>Top Ranking</small>
                         </NavLink>
-                        <NavLink to='/favorite' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221e3] hover:text-white'>
+                        <NavLink to='/favorite' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221f1] hover:text-white'>
                             <MdFavoriteBorder className=' text-xl mr-3' />
                             <small className=' text-[.8rem]'>Favoritos</small>
                         </NavLink>
@@ -37,7 +37,7 @@ const Menu = () => {
                 </div>
             </aside>
             {/* Menu Mobile */}
-            <aside className='fixed bottom-0 h-14 w-full rounded-t-lg py-3 bg-[#212121] text-[#b9b9b9] flex justify-evenly items-center font-medium lg:hidden'>
+            <aside className='fixed bottom-0 h-14 w-full rounded-t-lg py-3 bg-[#212121] text-[#b9b9b9] flex justify-around items-center font-medium z-50 lg:hidden'>
                 <dialog id="my_modal_1" className={`modal rounded-lg bg-[#313338] px-6 py-5`}>
                     <div className="modal-box">
                         <h3 className="font-medium text-lg text-[#EAEBEE]">Cerrar sesión</h3>
@@ -49,20 +49,20 @@ const Menu = () => {
                     </div>
                 </dialog>
                 <NavLink onClick={() => document.getElementById('my_modal_1').showModal()} className='flex flex-col items-center'>
-                    <TbLogout className=' text-xl' />
-                    <small className=' text-[.6rem]'>Cerrar sesión</small>
+                    <TbLogout className=' text-[1.3rem]' />
+                    <small className=' text-[.63rem]'>Cerrar sesión</small>
                 </NavLink>
-                <NavLink to='/top-ranking' className='flex flex-col items-center'>
-                    <BiCameraMovie className=' text-xl' />
-                    <small className=' text-[.6rem]'>Top ranking</small>
+                <NavLink to='/top-ranking' className='flex flex-col items-center -ml-3'>
+                    <BiCameraMovie className='text-[1.3rem]' />
+                    <small className=' text-[.63rem]'>Top Ranking</small>
                 </NavLink>
-                <NavLink to='/favorite' className=' flex flex-col items-center'>
-                    <MdFavoriteBorder className=' text-xl' />
+                <NavLink to='/favorite' className=' flex flex-col items-center mr-2.5'>
+                    <MdFavoriteBorder className=' text-[1.3rem]' />
                     <small className=' text-[.63rem]'>Favoritos</small>
                 </NavLink>
-                <NavLink to='/' className=' flex flex-col items-center'>
-                    <GoHome className=' text-xl' />
-                    <small className=' text-[.63rem]'>Inicio</small>
+                <NavLink to='/' className=' flex flex-col items-center  mr-2'>
+                    <GoHome className=' text-[1.35rem]' />
+                    <small className=' text-[.67rem] pt-.5'>Inicio</small>
                 </NavLink>
             </aside>
         </>
