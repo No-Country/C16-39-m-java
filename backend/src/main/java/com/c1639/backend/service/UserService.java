@@ -16,10 +16,20 @@ import com.c1639.backend.security.PasswordEncoder;
 import com.c1639.backend.security.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -138,6 +148,7 @@ public class UserService {
         String userEmail = tokenService.getVerifier(token).getSubject(); //Get the user email from the token
 
         boolean existsUser = userRepository.existsByEmailAndActiveTrue(userEmail);
+
         if (!existsUser) {
             throw new UserNotFoundException("User not found in the database");
         }
@@ -145,4 +156,32 @@ public class UserService {
         return (User) userRepository.findByEmailAndActiveTrue(userEmail);
     }
 
+    public Page<MovieDTO> getFavorites(Pageable pageable, HttpServletRequest request) {
+
+        User user = getUserFromDatabase(request);
+
+        List<MovieDTO> favoriteMoviesList = user
+          .getFavoriteMovies()
+          .stream()
+          .map(movieMapper::movieDTO).distinct().collect(Collectors.toList());
+
+
+        // Calculates paging indexes
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<MovieDTO> pageList;
+
+        if (favoriteMoviesList.size() < startItem) {
+            pageList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, favoriteMoviesList.size());
+            pageList = favoriteMoviesList.subList(startItem, toIndex);
+        }
+
+        // Create an object Page from the paged list and the provided pageable
+        return new PageImpl<>(pageList, pageable, favoriteMoviesList.size());
+
+    }
 }

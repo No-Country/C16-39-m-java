@@ -4,6 +4,8 @@ import com.c1639.backend.dto.movie.MovieDTO;
 import com.c1639.backend.dto.user.*;
 import com.c1639.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -127,6 +131,8 @@ public class UserController {
           .body(userService.getUser(request));
     }
 
+    /* Endpoints for: /users/favorites */
+
     @Operation(
       summary = "Save a movie like favorite.",
       description = "Let a user save a movie in favorite list."
@@ -137,7 +143,6 @@ public class UserController {
       @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content}),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
     })
-    @SecurityRequirements()
     @PostMapping("/favorites")
     @Transactional
     public ResponseEntity<UserFavoriteMovieCreatedDto> createFavorite(
@@ -156,5 +161,28 @@ public class UserController {
         return ResponseEntity
           .created(location)
           .body(userFavoriteCreatedMovieDto);
+    }
+
+    @Operation(
+      summary = "Get the favorite movies list.",
+      description = "Let a user get the favorite movie list. Token is required. "
+    )
+    @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Favorite movie list successfully generated.", content = {@Content}),
+      @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
+      @ApiResponse(responseCode = "404", description = "Favorite movie list Not Found", content = {@Content}),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
+    })
+    @Parameters({
+      @Parameter(name = "page", description = "Page number", required = false, example = "0"),
+      @Parameter(name = "size", description = "Size of the page", required = false, example = "10"),
+      @Parameter(name = "sort", description = "Sort the page", required = false, example = "id,desc")
+    })
+    @GetMapping("/favorites")
+    public ResponseEntity<Page<MovieDTO>> getFavorites(Pageable pageable, HttpServletRequest request) {
+
+        return ResponseEntity
+          .status(HttpStatus.OK)
+          .body(userService.getFavorites(pageable, request));
     }
 }
