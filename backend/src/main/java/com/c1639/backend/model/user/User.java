@@ -1,15 +1,16 @@
 package com.c1639.backend.model.user;
 
+import com.c1639.backend.model.movie.Movie;
 import com.c1639.backend.model.review.Review;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements UserDetails {
 
     @Id
@@ -41,7 +43,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    //****** Helper Methods: Keep Both Sides of the Association in SYNC.********/
+    //****** Helper Methods for Reviews: Keep Both Sides of the Association in SYNC.********/
 
     /** Add a review to the list of reviews
      * @param review the review to add */
@@ -57,6 +59,22 @@ public class User implements UserDetails {
         this.reviews.remove(review);
     }
     //********************End Helper Methods********************************************/
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "favorites", // name of the join table
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
+    private Set<Movie> favoriteMovies = new HashSet<>();
+
+    public void addFavoriteMovie(Movie movie) {
+        this.favoriteMovies.add(movie);
+        movie.getUsers().add(this);
+    }
+    public void removeFavoriteMovie(Movie movie) {
+        this.favoriteMovies.remove(movie);
+        movie.getUsers().remove(this);
+    }
 
     @Override
     public boolean equals(Object o) {

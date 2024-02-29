@@ -1,28 +1,31 @@
 package com.c1639.backend.model.favorite;
 
-import com.c1639.backend.model.movie.Movie;
-import com.c1639.backend.model.user.User;
-import jakarta.persistence.*;
-import lombok.*;
+/*ESTA ENTIDAD NO SE REQUERIRA YA QUE LA ASOCIACION PARA
+LOS FAVORITOS SE CREA SOLA CON ANOTACIONES DE HIBERNATE*/
 
-@Entity
+/*@Entity(name = "favorites")
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@RequiredArgsConstructor*/
+/**
+ * User * --> 1 Favorite 1 --> * Movie
+ * User * --> * Review
+ * */
 
 public class Favorite {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Long id;*/
 
-    // OneToMany relationship needs to be added to the User model
+    /*// OneToMany relationship needs to be added to the User model
     @ManyToOne
     private Movie movie;
 
-    @ManyToOne User user;
+    @ManyToMany(mappedBy = "movies")
+    private Set<User> users = new HashSet<>();*/
 
 
 }
