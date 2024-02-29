@@ -2,6 +2,7 @@ package com.c1639.backend.model.movie;
 
 
 
+import com.c1639.backend.model.favorite.Favorite;
 import com.c1639.backend.model.review.Review;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -20,6 +21,9 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites;
 
     @jakarta.persistence.Id
     @Id
@@ -43,5 +47,8 @@ public class Movie {
         this.reviews.add(review);
         review.setMovie(this);
     }
+
+
+    // create the helper method/s for relation movie - favorite
 
 }
