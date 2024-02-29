@@ -7,9 +7,7 @@ import com.c1639.backend.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import nonapi.io.github.classgraph.json.Id;
 
 import java.sql.Date;
@@ -18,7 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @RequiredArgsConstructor
 @Table(name="Movie")
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
@@ -48,6 +47,7 @@ public class Movie {
     @Column
     private String overview;
 
+    // Helper method
     public void addReview(Review review){
         this.reviews.add(review);
         review.setMovie(this);
