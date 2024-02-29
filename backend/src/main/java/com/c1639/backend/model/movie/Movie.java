@@ -31,8 +31,9 @@ public class Movie {
 
     @jakarta.persistence.Id
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    // Don't use @GeneratedValue here because the id is being set manually
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String title;
@@ -44,7 +45,7 @@ public class Movie {
     private String backdropPath;
     @Column
     private boolean active;
-    @Column
+    @Column(length = 1000)
     private String overview;
 
     // Helper method
