@@ -4,6 +4,7 @@ import Card from "../Card/Card";
 import.meta.env.VITE_API_KEY;
 import Pagination from "../Pagination/Pagination";
 
+
 const apiKey = import.meta.env.VITE_API_KEY;
 console.log(import.meta.env.VITE_API_KEY);
 
@@ -51,20 +52,24 @@ const CardContainer = () => {
     .slice(0, 10);
 
   return (
-    <div>
-      <h2 className="ml-6 text-lg font-bold">Populares</h2>
-      <div className="flex flex-wrap space-x-6">
+    <div className="mx-auto sm:text-center sm:w-full md:w-2/3  xl:w-1/3 2xl:w-3/4">
+      <div className="mb-4">
+      <h2 className="text-center text-lg font-bold mb-2">Populares</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {popularMovies.map((movie) => (
           <Card key={movie.id} movie={movie} />
         ))}
       </div>
+    </div>
 
-      <h2 className="ml-6 text-lg font-bold">Movies</h2>
-      <div className="flex flex-wrap space-x-6">
+    <div className="mb-4">
+      <h2 className="text-center text-lg font-bold mb-2">Movies</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <Card key={movie.id} movie={movie} />
         ))}
       </div>
+    </div>
       
 
       <div>

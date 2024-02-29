@@ -8,11 +8,11 @@ const imageUrl= `https://image.tmdb.org/t/p/w500${poster_path}`;
 
 const rank= Math.floor(vote_average);
     return(
-        <div className="flex-row m-4 sm:w-full, md:w-1/2, lg:w-1/3, xl:w-1/4, y 2xl:w-1/5">
+        <div className="flex-row m-4 ">
 
-        <div className="relative">
+        <div className="relative mx-auto max-w-xs sm:max-w-full md:max-w-full lg:max-w-full xl:max-w-full">
 
-        <img className="w-44 h-auto rounded-2xl  " src={imageUrl} alt={title} />
+        <img className=" w-full h-auto rounded-2xl " src={imageUrl} alt={title} />
         
         <p className="absolute top-0 right-2 bg-black bg-opacity-50 text-white rounded-md">⭐{rank}</p>
 
