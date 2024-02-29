@@ -117,7 +117,7 @@ const Login = () => {
 
           <p className="mt-4 text-center translate-y-12">
             ¿No tienes una cuenta?{" "}
-            <a href="/sing-up" className="text-blue-500 hover:text-blue-700">
+            <a href="/sign-up" className="text-blue-500 hover:text-blue-700">
               Crear cuenta
             </a>
           </p>

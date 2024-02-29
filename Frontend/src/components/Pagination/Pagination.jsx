@@ -18,7 +18,7 @@ const Pagination = ({
 
   return (
     <div>
-      <div className="flex justify-center">
+      <div className="flex justify-center pb-4">
         <button className="mr-2 border-2 border-orange-500  hover:bg-orange-600 transition duration-300 ease-in-out text-white py-2 px-4 rounded"
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
@@ -48,7 +48,7 @@ const Pagination = ({
           next
         </button>
       </div>
-      <span className="flex justify-center">
+      <span className="flex justify-center pb-14">
         Page {currentPage} of {totalMovies}
       </span>
     </div>
