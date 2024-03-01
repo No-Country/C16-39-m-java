@@ -15,7 +15,7 @@ const Menu = () => {
                 <div className='flex flex-col items-center w-full justify-between'>
                     <img className='w-44' src={img} alt="logo de la app" />
                     <div className='w-full mt-5 space-y-6 font-medium'>
-                        <NavLink to='/' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221f1] hover:text-white'>
+                        <NavLink to='/dashboard' className=' flex items-center pl-8 py-4 transition-all hover:bg-[#fab221f1] hover:text-white'>
                             <GoHome className=' text-xl mr-3' />
                             <small className=' text-[.8rem]'>Inicio</small>
                         </NavLink>
@@ -29,7 +29,7 @@ const Menu = () => {
                         </NavLink>
                     </div>
                     <div className='absolute bottom-10 font-medium w-full'>
-                        <NavLink to='/login' className='pl-8 py-3 flex items-center transition-all hover:bg-red-500 hover:text-white'>
+                        <NavLink to='/' className='pl-8 py-3 flex items-center transition-all hover:bg-red-500 hover:text-white'>
                             <TbLogout className=' text-xl mr-3' />
                             <small className=' text-[.8rem]'>Cerrar sesión</small>
                         </NavLink>
@@ -44,7 +44,7 @@ const Menu = () => {
                         <p className="py-3 text-[#fff] text-sm">¿Seguro que quieres cerrar sesión?</p>
                         <div className=' pt-3 flex justify-end space-x-5 text-xs text-white'>
                             <button onClick={() => document.getElementById('my_modal_1').close()} className='hover:underline'>Cancelar</button>
-                            <NavLink to='/login' className='bg-red-500 p-2 rounded-md'>Cerrar sesión</NavLink>
+                            <NavLink to='/' className='bg-red-500 p-2 rounded-md'>Cerrar sesión</NavLink>
                         </div>
                     </div>
                 </dialog>
@@ -60,7 +60,7 @@ const Menu = () => {
                     <MdFavoriteBorder className=' text-[1.3rem]' />
                     <small className=' text-[.63rem]'>Favoritos</small>
                 </NavLink>
-                <NavLink to='/' className=' flex flex-col items-center  mr-2'>
+                <NavLink to='/dashboard' className=' flex flex-col items-center  mr-2'>
                     <GoHome className=' text-[1.35rem]' />
                     <small className=' text-[.67rem] pt-.5'>Inicio</small>
                 </NavLink>

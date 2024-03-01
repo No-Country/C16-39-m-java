@@ -1,22 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { FaStar } from "react-icons/fa";
-import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import { MdError } from "react-icons/md";
+import { AuthContext } from "../../context/AuthContext/AuthContext";
 
 const DetallesPeliculas = () => {
 
     const URL = 'https://api.themoviedb.org/3/movie'
     const API_KEY = import.meta.env.VITE_API_KEY
+    const URL_BACKEND = 'https://movies-apirest-c77e9f5e2ba2.herokuapp.com'
 
     const [movieId, setMovieId] = useState([])
     const [actors, setActors] = useState([])
     const [staff, setStaff] = useState([])
     const [trailerKey, setTrailerKey] = useState('')
     const [errorMessage, setErrorMessage] = useState(false)
+    const [addFavorite, setAddFavorite] = useState(false)
 
     const { id } = useParams()
+
+    const { userData } = useContext(AuthContext)
+
+    const token = userData.token
 
     useEffect(() => {
 
@@ -54,6 +61,29 @@ const DetallesPeliculas = () => {
 
     const director = staff.find(member => member.job === 'Director')
 
+    const handleFavorite = async () => {
+        try {
+            const data = {
+                id: movieId.id,
+                title: movieId.title,
+                overview: movieId.overview,
+                releaseYear: movieId.releaseYear,
+                posterPath: movieId.posterPath,
+                backdropPath: movieId.backdropPath
+            }
+
+            const response = await axios.post(`${URL_BACKEND}/users/favorites`, data, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            setAddFavorite(true)
+        
+        } catch (error) {
+            console.error( error)
+        }
+    }
+
     return (
         <section className="px-4 text-white pt-4 pb-20 lg:ml-48 xl:px-12 lg:pt-8">
             <div className=" flex justify-center">
@@ -73,7 +103,7 @@ const DetallesPeliculas = () => {
                         ))}
                     </div>
                     <div className=" flex items-center font-medium">
-                        <MdFavoriteBorder className=" text-[1.4rem] mr-2 text-stone-400" />
+                        <MdFavorite onClick={handleFavorite} className={`text-[1.4rem] mr-2 ${addFavorite ? 'text-red-600' : ' text-stone-400'}`}/>
                         <FaStar className=" text-yellow-400 mr-1" />
                         <p className=" mr-1">{movieId.vote_average}</p>
                         <p className=" text-xs text-stone-400">| {movieId.popularity}k</p>
