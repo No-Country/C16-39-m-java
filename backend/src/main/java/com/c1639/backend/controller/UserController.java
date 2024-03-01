@@ -138,20 +138,25 @@ public class UserController {
       description = "Let a user save a movie in favorite list."
     )
     @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Movie saved successfully.", content = {@Content}),
+      @ApiResponse(
+        responseCode = "201", description = "Favorite movie saved successfully",
+        content = {
+          @Content(mediaType = "application/json",
+            schema = @Schema(implementation = UserFavoriteMovieMessagesDto.class))
+        }),
       @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
       @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content}),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
     })
     @PostMapping("/favorites")
     @Transactional
-    public ResponseEntity<UserFavoriteMovieCreatedDto> createFavorite(
+    public ResponseEntity<UserFavoriteMovieMessagesDto> createFavorite(
         @RequestBody @Valid MovieDTO movieDto,
         UriComponentsBuilder uriComponentsBuilder,
         HttpServletRequest request
     ) {
 
-        UserFavoriteMovieCreatedDto userFavoriteCreatedMovieDto = userService.createFavorite(movieDto, request);
+        UserFavoriteMovieMessagesDto userFavoriteCreatedMovieDto = userService.createFavorite(movieDto, request);
 
         URI location = uriComponentsBuilder
           .path("/users/favorites/movie/{id}")
@@ -168,7 +173,12 @@ public class UserController {
       description = "Let a user get the favorite movie list. Token is required. "
     )
     @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Favorite movie list successfully generated.", content = {@Content}),
+      @ApiResponse(
+        responseCode = "201", description = "Favorite movie list successfully generated",
+        content = {
+          @Content(mediaType = "application/json",
+            schema = @Schema(implementation = MovieDTO.class))
+        }),
       @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
       @ApiResponse(responseCode = "404", description = "Favorite movie list Not Found", content = {@Content}),
       @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
@@ -184,5 +194,29 @@ public class UserController {
         return ResponseEntity
           .status(HttpStatus.OK)
           .body(userService.getFavorites(pageable, request));
+    }
+
+    @Operation(
+      summary = "Remove a movie from the favorite movies list.",
+      description = "Let a user remove a movie from the favorite movies list. Token is required. "
+    )
+    @ApiResponses(value = {
+      @ApiResponse(
+        responseCode = "200", description = "Movie successfully removed from favorite list",
+        content = {
+          @Content(mediaType = "application/json",
+            schema = @Schema(implementation = UserFavoriteMovieMessagesDto.class))
+        }),
+      @ApiResponse(responseCode = "403", description = "Forbidden access to this resource", content = {@Content}),
+      @ApiResponse(responseCode = "404", description = "Movie not found in favorite movie list", content = {@Content}),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
+    })
+    @Parameters({
+        @Parameter(name = "idMovie", description = "Movie id", required = true, example = "745891")
+    })
+    @DeleteMapping("/favorites/{idMovie}")
+    @Transactional
+    public ResponseEntity<UserFavoriteMovieMessagesDto> deleteFavorite(@PathVariable Long idMovie, HttpServletRequest request) {
+        return ResponseEntity.status(200).body(userService.deleteFavorite(idMovie, request));
     }
 }

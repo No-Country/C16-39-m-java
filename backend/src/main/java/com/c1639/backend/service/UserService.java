@@ -19,16 +19,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -124,7 +121,7 @@ public class UserService {
         return userMapper.userToUserSignedUpDto(user);
     }
 
-    public UserFavoriteMovieCreatedDto createFavorite(MovieDTO movieDto, HttpServletRequest request) {
+    public UserFavoriteMovieMessagesDto createFavorite(MovieDTO movieDto, HttpServletRequest request) {
 
         User user = getUserFromDatabase(request);
         boolean existsMovie = movieRepository.existsByIdAndActiveTrue(movieDto.id());
@@ -136,24 +133,11 @@ public class UserService {
 
         user.addFavoriteMovie(movie);
 
-        return new UserFavoriteMovieCreatedDto(
+        return new UserFavoriteMovieMessagesDto(
           false,
           "Pelicula favorita guardada exitosamente"
         );
 
-    }
-
-    private User getUserFromDatabase(HttpServletRequest request) {
-        String token = tokenService.getTokenFromHeader(request); //Get token from the header
-        String userEmail = tokenService.getVerifier(token).getSubject(); //Get the user email from the token
-
-        boolean existsUser = userRepository.existsByEmailAndActiveTrue(userEmail);
-
-        if (!existsUser) {
-            throw new UserNotFoundException("User not found in the database");
-        }
-
-        return (User) userRepository.findByEmailAndActiveTrue(userEmail);
     }
 
     public Page<MovieDTO> getFavorites(Pageable pageable, HttpServletRequest request) {
@@ -165,6 +149,9 @@ public class UserService {
           .stream()
           .map(movieMapper::movieDTO).distinct().collect(Collectors.toList());
 
+        if (favoriteMoviesList.isEmpty()) {
+            throw new UserNotFoundException("No se encontraron películas favoritas");
+        }
 
         // Calculates paging indexes
         int pageSize = pageable.getPageSize();
@@ -183,5 +170,47 @@ public class UserService {
         // Create an object Page from the paged list and the provided pageable
         return new PageImpl<>(pageList, pageable, favoriteMoviesList.size());
 
+    }
+
+    public UserFavoriteMovieMessagesDto deleteFavorite(Long idMovie, HttpServletRequest request) {
+
+        User user = getUserFromDatabase(request);
+        Movie movie = movieRepository.findByIdAndActiveTrue(idMovie);
+
+        if (movie == null) {
+            return new UserFavoriteMovieMessagesDto(
+              true,
+              "La película no existe en la base de datos"
+            );
+        }
+
+        boolean isEmptyMovie = user.getFavoriteMovies().stream().filter(m -> m.getId().equals(idMovie)).findFirst().isEmpty();
+
+        if (isEmptyMovie) {
+            return new UserFavoriteMovieMessagesDto(
+              true,
+              "La película no existe en la lista de favoritos"
+            );
+        }
+
+        user.removeFavoriteMovie(movie);
+
+        return new UserFavoriteMovieMessagesDto(
+          false,
+          "Pelicula favorita eliminada exitosamente"
+        );
+    }
+
+    private User getUserFromDatabase(HttpServletRequest request) {
+        String token = tokenService.getTokenFromHeader(request); //Get token from the header
+        String userEmail = tokenService.getVerifier(token).getSubject(); //Get the user email from the token
+
+        boolean existsUser = userRepository.existsByEmailAndActiveTrue(userEmail);
+
+        if (!existsUser) {
+            throw new UserNotFoundException("User not found in the database");
+        }
+
+        return (User) userRepository.findByEmailAndActiveTrue(userEmail);
     }
 }
