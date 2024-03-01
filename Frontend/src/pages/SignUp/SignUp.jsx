@@ -126,7 +126,7 @@ const SignUp = () => {
                                     loading && <span className="loading loading-spinner loading-sm ml-4"></span>
                                 }
                             </button>
-                            <p className='text-xs text-white'>¿Ya tienes una cuenta? <Link to='/login' className=' text-blue-500 hover:underline'>Inicia sesión</Link></p>
+                            <p className='text-xs text-white'>¿Ya tienes una cuenta? <Link to='/' className=' text-blue-500 hover:underline'>Inicia sesión</Link></p>
                         </div>
                     </div>
                 </form>
