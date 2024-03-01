@@ -33,7 +33,7 @@ const SignUp = () => {
                 setLoading(false)
                 setToast(false)
                 if (responseData.active) {
-                    navigate('/login')
+                    navigate('/')
                 }
             }, 2500)
         } catch (error) {

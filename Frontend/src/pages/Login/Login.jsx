@@ -34,7 +34,7 @@ const Login = () => {
       const result= fullURL.data;
       console.log(result);
 
-    navigate("/home");
+    navigate("/dashboard");
 
       return result
 
