@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { FaStar } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
+import { MdFavoriteBorder } from "react-icons/md";
 import { MdError } from "react-icons/md";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 
@@ -18,6 +19,7 @@ const DetallesPeliculas = () => {
     const [trailerKey, setTrailerKey] = useState('')
     const [errorMessage, setErrorMessage] = useState(false)
     const [addFavorite, setAddFavorite] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const { id } = useParams()
 
@@ -43,6 +45,8 @@ const DetallesPeliculas = () => {
             } catch (error) {
                 console.log(error)
                 setErrorMessage(true)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -55,6 +59,24 @@ const DetallesPeliculas = () => {
             <div className='h-screen flex flex-col items-center justify-center space-y-3'>
                 <MdError className=' text-red-500 text-4xl' />
                 <p className=' text-red-500 text-sm text-center md:text-base'>Hubo un problema en el servidor.<br />Por favor, inténtalo de nuevo más tarde.</p>
+            </div>
+        )
+    }
+
+    if (loading) {
+        return (
+            <div className=" px-4 py-6 h-screen flex flex-col gap-4 w-full">
+                <div className="skeleton h-72 w-full"></div>
+                <div className=" flex items-center justify-between">
+                    <div className=" space-y-3">
+                        <div className="skeleton h-3 w-28"></div>
+                        <div className="skeleton h-2 w-16"></div>
+                    </div>
+                    <div className="space-y-3">
+                        <div className="skeleton h-3 w-28"></div>
+                    </div>
+                </div>
+                <div className="skeleton h-28 w-full"></div>
             </div>
         )
     }
@@ -73,14 +95,11 @@ const DetallesPeliculas = () => {
             }
 
             const response = await axios.post(`${URL_BACKEND}/users/favorites`, data, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: {'Authorization': `Bearer ${token}`}
             })
             setAddFavorite(true)
-        
         } catch (error) {
-            console.error( error)
+            console.error(error)
         }
     }
 
@@ -88,10 +107,10 @@ const DetallesPeliculas = () => {
         <section className="px-4 text-white pt-4 pb-20 lg:ml-48 xl:px-12 lg:pt-8">
             <div className=" flex justify-center">
                 <iframe
-                    className="rounded-lg w-full h-72 lg:rounded-2xl xl:h-96"
+                    className="skeleton rounded-lg w-full h-72 lg:rounded-2xl xl:h-96"
                     src={`https://www.youtube.com/embed/${trailerKey}`}
-                    allowFullScreen
-                ></iframe>
+                    allowFullScreen>
+                </iframe>
             </div>
             <div className="pt-6 space-y-6">
                 <div className=" flex flex-wrap items-center justify-between">
@@ -103,7 +122,9 @@ const DetallesPeliculas = () => {
                         ))}
                     </div>
                     <div className=" flex items-center font-medium">
-                        <MdFavorite onClick={handleFavorite} className={`text-[1.4rem] mr-2 ${addFavorite ? 'text-red-600' : ' text-stone-400'}`}/>
+                        <button onClick={handleFavorite} className="text-[1.4rem] mr-2">
+                            {addFavorite ? <MdFavorite className='text-red-600' /> : <MdFavoriteBorder className=" text-stone-500" />}
+                        </button>
                         <FaStar className=" text-yellow-400 mr-1" />
                         <p className=" mr-1">{movieId.vote_average}</p>
                         <p className=" text-xs text-stone-400">| {movieId.popularity}k</p>
