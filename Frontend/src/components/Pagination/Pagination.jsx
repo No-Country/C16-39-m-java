@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { FaAngleLeft } from 'react-icons/fa';
+import { FaAngleRight } from 'react-icons/fa';
 
 const Pagination = ({
   currentPage,
@@ -18,12 +20,12 @@ const Pagination = ({
 
   return (
     <div>
-      <div className="flex justify-center pb-4">
+      <div className="flex flex-wrap justify-center pb-4 ">
         <button className="mr-2 border-2 border-orange-500  hover:bg-orange-600 transition duration-300 ease-in-out text-white py-2 px-4 rounded"
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-          Previous
+           <FaAngleLeft />
         </button>
 
         {Array.from(
@@ -45,11 +47,11 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          next
+           <FaAngleRight />
         </button>
       </div>
       <span className="flex justify-center pb-14">
-        Page {currentPage} of {totalMovies}
+        Page {currentPage} of {totalPages}
       </span>
     </div>
   );

@@ -34,7 +34,7 @@ const CardContainer = () => {
         setMovies(data.results);
 
         
-        const maxPages = 100;
+        const maxPages = 200;
         setTotalMovies(Math.min(maxPages, Math.ceil(response.data.total_results / 10)));
         
       } catch (error) {
@@ -52,10 +52,10 @@ const CardContainer = () => {
     .slice(0, 10);
 
   return (
-    <div className="bg   mx-auto sm:text-center sm:w-full md:w-2/3  xl:w-1/3 2xl:w-3/4">
+    <div className="mx-auto sm:w-full md:w-2/3  xl:w-1/3 2xl:w-3/4 mt-6">
       <div className="mb-4">
-      <h2 className="text-center text-lg font-bold mb-2">Populares</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
+      <h2 className="text-left text-xl font-bold mb-2 sm:text-center">Populares</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
         {popularMovies.map((movie) => (
           <Card key={movie.id} movie={movie} />
         ))}
@@ -63,8 +63,8 @@ const CardContainer = () => {
     </div>
 
     <div className="mb-4">
-      <h2 className="text-center text-lg font-bold mb-2">Movies</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <h2 className="text-left text-xl font-bold mb-2 sm:text-center">Movies</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
         {movies.map((movie) => (
           <Card key={movie.id} movie={movie} />
         ))}
