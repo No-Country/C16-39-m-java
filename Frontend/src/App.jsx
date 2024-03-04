@@ -7,6 +7,7 @@ import PaginaNoEncontrada from "./pages/PaginaNoEncontrada/PaginaNoEncontrada"
 import TopRanking from "./pages/TopRanking/TopRanking";
 import LayoutDashboard from "./components/LayoutDashboard/LayoutDashboard";
 import { AuthContextProvider } from "./context/AuthContext/AuthContext";
+import Favorite from "./pages/Favorite/Favorite";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 					<Route path="*" element= {<PaginaNoEncontrada/>}/>
 					<Route path ="/dashboard" element= {<LayoutDashboard><Home/></LayoutDashboard>}/>
 					<Route path ="/top-ranking" element= {<LayoutDashboard><TopRanking/></LayoutDashboard>}/>
+					<Route path ="/favorite" element= {<LayoutDashboard><Favorite/></LayoutDashboard>}/>
 				</Routes>
 			</AuthContextProvider>
 	

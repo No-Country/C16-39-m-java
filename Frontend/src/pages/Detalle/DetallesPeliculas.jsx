@@ -65,18 +65,20 @@ const DetallesPeliculas = () => {
 
     if (loading) {
         return (
-            <div className=" px-4 py-6 h-screen flex flex-col gap-4 w-full">
-                <div className="skeleton h-72 w-full"></div>
-                <div className=" flex items-center justify-between">
+            <div className="px-4 py-6 h-screen flex flex-col gap-4 lg:ml-48 xl:px-12">
+                <div className="skeleton h-72"></div>
+                <div className=" flex items-center justify-between mb-7">
                     <div className=" space-y-3">
-                        <div className="skeleton h-3 w-28"></div>
-                        <div className="skeleton h-2 w-16"></div>
+                        <p className="skeleton h-3 w-28"></p>
+                        <p className="skeleton h-2 w-16"></p>
                     </div>
                     <div className="space-y-3">
-                        <div className="skeleton h-3 w-28"></div>
+                        <p className="skeleton h-3 w-28"></p>
                     </div>
                 </div>
-                <div className="skeleton h-28 w-full"></div>
+                <p className="skeleton h-2"></p>
+                <p className="skeleton h-2"></p>
+                <p className="skeleton h-2"></p>
             </div>
         )
     }
@@ -89,20 +91,21 @@ const DetallesPeliculas = () => {
                 id: movieId.id,
                 title: movieId.title,
                 overview: movieId.overview,
-                releaseYear: movieId.releaseYear,
-                posterPath: movieId.posterPath,
-                backdropPath: movieId.backdropPath
+                releaseYear: movieId.release_date,
+                posterPath: movieId.poster_path,
+                backdropPath: movieId.backdrop_path
             }
 
             const response = await axios.post(`${URL_BACKEND}/users/favorites`, data, {
                 headers: {'Authorization': `Bearer ${token}`}
             })
             setAddFavorite(true)
+
         } catch (error) {
             console.error(error)
         }
     }
-
+    
     return (
         <section className="px-4 text-white pt-4 pb-20 lg:ml-48 xl:px-12 lg:pt-8">
             <div className=" flex justify-center">
@@ -122,7 +125,7 @@ const DetallesPeliculas = () => {
                         ))}
                     </div>
                     <div className=" flex items-center font-medium">
-                        <button onClick={handleFavorite} className="text-[1.4rem] mr-2">
+                        <button onClick={handleFavorite} data-tip="Agregar a Favoritos" className="text-[1.4rem] mr-2 md:tooltip">
                             {addFavorite ? <MdFavorite className='text-red-600' /> : <MdFavoriteBorder className=" text-stone-500" />}
                         </button>
                         <FaStar className=" text-yellow-400 mr-1" />
