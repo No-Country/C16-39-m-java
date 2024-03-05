@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
 
-
+                                               //!link api 
       const serverProd = 'https://movies-apirest-c77e9f5e2ba2.herokuapp.com'
       const path = '/users/auth'
       //const response = await axios.post ('https://movies-apirest-c77e9f5e2ba2.herokuapp.com/users/auth',data);
@@ -50,9 +50,9 @@ const Login = () => {
 
 
   return (
-    <div className="flex items-center justify-center h-screen font-poppins">
+    <div className="w-full flex items-center justify-center h-screen font-poppins">
 
-      <div className="w-1/2 bg-opacity-95 p-6 rounded shadow flex flex-col items-center">
+      <div className="w-full lg:w-1/2 xl:w-1/2 bg-opacity-95 p-6 rounded flex flex-col items-center">
 
         <img src={logo4} alt="Logo" className="absolute top-0 left-0 w-34 h-32" />
 
@@ -65,7 +65,7 @@ const Login = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
-          className="space-y-4"
+          className="space-y-4 "
         >
           <div className="w-full max-w-md">
             <label htmlFor="Email" className="block">
