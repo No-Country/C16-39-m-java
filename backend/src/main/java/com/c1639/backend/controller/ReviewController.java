@@ -2,7 +2,10 @@ package com.c1639.backend.controller;
 
 import com.c1639.backend.dto.review.ListReviewsDTO;
 import com.c1639.backend.dto.review.ReviewDTO;
+import com.c1639.backend.model.comment.Comment;
 import com.c1639.backend.model.review.Review;
+import com.c1639.backend.repository.CommentRepository;
+import com.c1639.backend.repository.ReviewRepository;
 import com.c1639.backend.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Tag(name = "Review", description = "Manage all endpoints about Reviews")
 @RestController
@@ -32,7 +36,7 @@ public class ReviewController {
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode= "200", description = "All reviews found succesfully",
+                    responseCode = "200", description = "All reviews found succesfully",
                     content = {
                             @Content(mediaType = "aplication/json",
                                     schema = @Schema(implementation = ListReviewsDTO.class))
@@ -43,7 +47,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content})
     })
     @GetMapping("/getAllReviews")
-    public ResponseEntity<List<Review>> getAlReviews(){
+    public ResponseEntity<List<Review>> getAlReviews() {
         List<Review> reviews = reviewService.getAllReviews();
         return ResponseEntity.ok(reviews);
     }
@@ -95,18 +99,47 @@ public class ReviewController {
     )
     @ApiResponses(value = {
             @ApiResponse(
-            responseCode = "200", description = "Review returned successfully",
-            content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReviewDTO.class))
-            }),
+                    responseCode = "200", description = "Review returned successfully",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ReviewDTO.class))
+                    }),
             @ApiResponse(responseCode = "400", description = "Cannot return the movie", content = {@Content}),
             @ApiResponse(responseCode = "404", description = "Not found", content = {@Content}),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = {@Content})
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long id){
+    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
         Review review = reviewService.getById(id);
         return ResponseEntity.ok(review);
+    }
+
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+
+    @Operation(
+            summary = "create a Coment",
+            description = "The request body must contain the Comment object"
+    )
+
+    @PostMapping("/{reviewId}/comments")
+    public ResponseEntity<?> addCommentToReview(@PathVariable Long reviewId, @RequestBody Comment comment) {
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        if (!optionalReview.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Review review = optionalReview.get();
+        comment.setReview(review);
+        review.setComment(comment);
+
+        reviewRepository.save(review);
+
+        return ResponseEntity.ok().build();
     }
 }
