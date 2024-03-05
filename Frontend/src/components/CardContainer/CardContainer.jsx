@@ -6,7 +6,7 @@ import Pagination from "../Pagination/Pagination";
 
 
 const apiKey = import.meta.env.VITE_API_KEY;
-console.log(import.meta.env.VITE_API_KEY);
+
 
 const CardContainer = () => {
   // estado para actualizar peliculas
@@ -17,8 +17,7 @@ const CardContainer = () => {
   const [totalMovies, setTotalMovies] = useState(0);
 
 
-  // imagen de portada
-  // const [coverMovies, setCoverMovies]
+  
   useEffect(() => {
     const moviesData = async () => {
       try {

@@ -4,7 +4,7 @@ import axios from "axios"
 import fondoPortada from "./images/fondoPortada.png"
 import logo4 from "./images/logo4.png"
 
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 import { useContext } from "react";
 
@@ -48,8 +48,6 @@ const Login = () => {
     }
   };
 
-  // const watchEmail = watch("email");
-  // const watchPassword = watch("password");
 
   return (
     <div className="flex items-center justify-center h-screen font-poppins">
@@ -59,7 +57,7 @@ const Login = () => {
         <img src={logo4} alt="Logo" className="absolute top-0 left-0 w-34 h-32" />
 
         <h2 className="text-3xl mb-4 text-center text-white -translate-y-10">
-          Bienvenido/a de nuevo
+          Bienvenido de nuevo
         </h2>
         <p className="mb-4 text-center text-white text-opacity-50  -translate-y-8">
           Por favor ingrese sus datos
@@ -81,7 +79,7 @@ const Login = () => {
               {...register("email", {
                 required: "El campo es requerido",
                 pattern: {
-                  value: /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                   message: "El formato del email es incorrecto",
                 },
               })}
@@ -119,9 +117,7 @@ const Login = () => {
 
           <p className="mt-4 text-center translate-y-12">
             ¿No tienes una cuenta?{" "}
-            <a href="/sign-up" className="text-blue-500 hover:text-blue-700">
-              Crear cuenta
-            </a>
+              <Link to="/sign-up" className="text-blue-500 hover:text-blue-700"> Crear cuenta</Link>
           </p>
         </form>
       </div>

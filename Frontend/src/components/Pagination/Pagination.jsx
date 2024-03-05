@@ -51,7 +51,7 @@ const Pagination = ({
         </button>
       </div>
       <span className="flex justify-center pb-14">
-        Page {currentPage} of {totalPages}
+         {currentPage} of {totalPages}
       </span>
     </div>
   );
