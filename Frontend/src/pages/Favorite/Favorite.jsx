@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { useEffect } from 'react'
 import { AuthContext } from '../../context/AuthContext/AuthContext'
-import { MdError } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
 const Favorite = () => {
@@ -10,7 +9,7 @@ const Favorite = () => {
     const URL_BACKEND = 'https://movies-apirest-c77e9f5e2ba2.herokuapp.com'
 
     const [favoriteMovies, setFavoriteMovies] = useState([])
-    const [errormessage, setErrorMessage] = useState(false)
+    const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(true)
 
     const { userData } = useContext(AuthContext)
@@ -21,20 +20,12 @@ const Favorite = () => {
             .then(response => {
                 setFavoriteMovies(response.data.content)
             })
-            .catch(() => {
-                setErrorMessage(true)
+            .catch((error) => {
+                const {statusCode} =  error.response.data
+                statusCode === 404 ? setMessage('No tienes peliculas favoritas') : setMessage('Hubo un problema en el servidor')
             })
             .finally(() => setLoading(false))
     }, [])
-
-    if (errormessage) {
-        return (
-            <div className='h-screen flex flex-col items-center justify-center space-y-3'>
-                <MdError className=' text-red-500 text-4xl' />
-                <p className=' text-red-500 text-sm text-center md:text-base'>Hubo un problema en el servidor.<br />Por favor, inténtalo de nuevo más tarde.</p>
-            </div>
-        )
-    }
 
     if (loading) {
         return (
@@ -48,13 +39,13 @@ const Favorite = () => {
             .then(() => setFavoriteMovies(prevMovies => prevMovies.filter(movie => movie.id !== movieId)))
             .catch(error => {
                 console.error('Error al eliminar la película:', error)
-                setErrorMessage(true)
             })
     }
 
     return (
         <section className='px-4 text-white py-6 pb-20 lg:ml-48'>
             <h2 className=' text-xl font-bold pb-8'>Películas Favoritas</h2>
+            <p className=' text-center'>{message}</p>
             <div className=' flex justify-around items-center flex-wrap gap-4'>
                 {favoriteMovies.map(movie => (
                     <figure key={movie.id} className='relative space-y-2 mb-3'>

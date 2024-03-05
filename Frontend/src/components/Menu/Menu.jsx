@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { GoHome } from "react-icons/go";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BiCameraMovie } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
 import { NavLink } from 'react-router-dom'
 import img from './assets/logo-moviepulse.png'
+import { AuthContext } from '../../context/AuthContext/AuthContext';
 
 
 const Menu = () => {
+
+    const { logout } = useContext(AuthContext)
 
     return (
         <>
@@ -29,7 +32,7 @@ const Menu = () => {
                         </NavLink>
                     </div>
                     <div className='absolute bottom-10 font-medium w-full'>
-                        <NavLink to='/' className='pl-8 py-3 flex items-center transition-all hover:bg-red-500 hover:text-white'>
+                        <NavLink onClick={logout} to='/' className='pl-8 py-3 flex items-center transition-all hover:bg-red-500 hover:text-white'>
                             <TbLogout className=' text-xl mr-3' />
                             <small className=' text-[.8rem]'>Cerrar sesión</small>
                         </NavLink>
@@ -44,7 +47,7 @@ const Menu = () => {
                         <p className="py-3 text-[#fff] text-sm">¿Seguro que quieres cerrar sesión?</p>
                         <div className=' pt-3 flex justify-end space-x-5 text-xs text-white'>
                             <button onClick={() => document.getElementById('my_modal_1').close()} className='hover:underline'>Cancelar</button>
-                            <NavLink to='/' className='bg-red-500 p-2 rounded-md'>Cerrar sesión</NavLink>
+                            <NavLink onClick={logout} to='/' className='bg-red-500 p-2 rounded-md'>Cerrar sesión</NavLink>
                         </div>
                     </div>
                 </dialog>
