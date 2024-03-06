@@ -3,7 +3,7 @@ import CardContainer from "../../components/CardContainer/CardContainer";
 const Home = () =>{
 
     return(
-        <div className="flex justify-center">
+        <div>
             
             <CardContainer/>
         </div>

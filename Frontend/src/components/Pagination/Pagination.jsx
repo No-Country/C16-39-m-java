@@ -20,12 +20,14 @@ const Pagination = ({
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center pb-4 ">
+      <div className="flex flex-wrap justify-center pb-4">
         <button className="mr-2 border-2 border-orange-500  hover:bg-orange-600 transition duration-300 ease-in-out text-white py-2 px-4 rounded"
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-           <FaAngleLeft />
+           <span className="text-sm sm:text-2xl">
+    <FaAngleLeft />
+  </span>
         </button>
 
         {Array.from(
@@ -37,7 +39,7 @@ const Pagination = ({
             onClick={() => handlePageChange(page)}
             className={`${
                 currentPage === page ? "bg-orange-500 text-white" : "bg-gray-200 text-gray-700"
-              } py-2 px-4 rounded mr-2`}
+              }  text-sm p-1 rounded mr-2 md:text-md md:p-2 lg:text-lg lg:p-3`}
           >
             {page}
           </button>
@@ -47,11 +49,13 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-           <FaAngleRight />
+           <span className="text-sm sm:text-2xl">
+    <FaAngleRight />
+  </span>
         </button>
       </div>
       <span className="flex justify-center pb-14">
-         {currentPage} of {totalPages}
+         {currentPage} de {totalPages}
       </span>
     </div>
   );
