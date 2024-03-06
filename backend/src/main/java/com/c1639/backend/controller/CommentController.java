@@ -53,7 +53,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Update a comment by ID",
+    @Operation(summary = "Get a comment by ID",
             description = "Allows the user to search by ID"
     )
 
