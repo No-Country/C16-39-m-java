@@ -87,7 +87,7 @@ cd backend
 
 ## Frontend 🖥️
 
-- _Coming soon..._.
+- [movie-pulse](https://c16-39-m-java.vercel.app)
 
 ## Authors ✒️
 
