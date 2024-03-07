@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "https://movies-apirest-c77e9f5e2ba2.herokuapp.com/api/$1" },
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
+  }

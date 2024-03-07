@@ -1,9 +1,18 @@
 import { useForm } from "react-hook-form";
+import axios from "axios"
 //import backgroundImage from "./background.png";
 import fondoPortada from "./images/fondoPortada.png"
 import logo4 from "./images/logo4.png"
 
+import { Link, useNavigate } from "react-router-dom"
+import { AuthContext } from "../../context/AuthContext/AuthContext";
+import { useContext } from "react";
+
 const Login = () => {
+
+  const { login } = useContext(AuthContext)
+
+  const navigate = useNavigate();
   // register nos sirve para registrar los campos y validaciones
   //handleSubmit: para el envio de formulario
   const {
@@ -14,13 +23,30 @@ const Login = () => {
   } = useForm();
 
   //recibimos los datos del formulario
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
     console.log(errors);
-  };
 
-  // const watchEmail = watch("email");
-  // const watchPassword = watch("password");
+
+    try {
+
+                                               //!link api 
+      const serverProd = 'https://movies-apirest-c77e9f5e2ba2.herokuapp.com'
+      const path = '/users/auth'
+      //const response = await axios.post ('https://movies-apirest-c77e9f5e2ba2.herokuapp.com/users/auth',data);
+      const fullURL = await axios.post(`${serverProd}${path}`, data)
+      const result = fullURL.data;
+      console.log(result);
+      login(result)
+      navigate("/dashboard");
+
+      // return result
+
+    } catch (error) {
+      console.error("Error login user:", error);
+      alert("Error login user. Please try again.");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen font-poppins">
@@ -38,11 +64,11 @@ const Login = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
-          className="space-y-4"
+          className="space-y-4 "
         >
           <div className="w-full max-w-md">
             <label htmlFor="Email" className="block">
-              
+
             </label>
             <input
               type="text"
@@ -52,7 +78,7 @@ const Login = () => {
               {...register("email", {
                 required: "El campo es requerido",
                 pattern: {
-                  value: /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                   message: "El formato del email es incorrecto",
                 },
               })}
@@ -63,22 +89,20 @@ const Login = () => {
 
           <div className="w-full max-w-md">
             <label htmlFor="Password" className="block">
-              
+
             </label>
             <input
+              className='input-signup'
+              placeholder='Contraseña'
+              autoComplete='off'
               type="password"
               name="password"
-              autoComplete="off"
-              placeholder="Ingrese su password"
-              {...register("password", {
-                required: "El campo es requerido",
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                  message:
-                    "La contraseña debe tener mínimo ocho caracteres, al menos una letra y un número",
-                },
+              id="password"
+              {...register('password', {
+                required: 'Este campo es obligatorio',
+                minLength: { value: 8, message: 'La contraseña debe tener entre 8 y 25 caracteres' },
+                maxLength: { value: 25, message: 'La contraseña no debe superar los 25 caracteres' },
               })}
-              className="block w-full p-2 border-b border-gray-300 bg-transparent mt-1"
             />
             {errors.password && (
               <span className="text-red-500">{errors.password.message}</span>
@@ -92,9 +116,7 @@ const Login = () => {
 
           <p className="mt-4 text-center translate-y-12">
             ¿No tienes una cuenta?{" "}
-            <a href="/sing-up" className="text-blue-500 hover:text-blue-700">
-              Crear cuenta
-            </a>
+              <Link to="/sign-up" className="text-blue-500 hover:text-blue-700"> Crear cuenta</Link>
           </p>
         </form>
       </div>
