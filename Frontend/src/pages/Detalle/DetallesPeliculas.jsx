@@ -42,6 +42,11 @@ const DetallesPeliculas = () => {
                 setStaff(creditsResponse.data.crew)
                 setTrailerKey(videosResponse.data.results[0].key)
 
+                const favoriteStatus = localStorage.getItem(`favoriteStatus-${id}`)
+                if (favoriteStatus === 'true') {
+                    setAddFavorite(true)
+                }
+
             } catch (error) {
                 console.log(error)
                 setErrorMessage(true)
@@ -87,20 +92,29 @@ const DetallesPeliculas = () => {
 
     const handleFavorite = async () => {
         try {
-            const data = {
-                id: movieId.id,
-                title: movieId.title,
-                overview: movieId.overview,
-                releaseYear: movieId.release_date,
-                posterPath: movieId.poster_path,
-                backdropPath: movieId.backdrop_path
+            if (addFavorite) {
+                await axios.delete(`${URL_BACKEND}/users/favorites/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                setAddFavorite(false)
+                localStorage.setItem(`favoriteStatus-${id}`, 'false')
+
+            } else {
+                const data = {
+                    id: movieId.id,
+                    title: movieId.title,
+                    overview: movieId.overview,
+                    releaseYear: movieId.release_date,
+                    posterPath: movieId.poster_path,
+                    backdropPath: movieId.backdrop_path
+                }
+                await axios.post(`${URL_BACKEND}/users/favorites`, data, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+
+                setAddFavorite(true)
+                localStorage.setItem(`favoriteStatus-${id}`, 'true')
             }
-
-            const response = await axios.post(`${URL_BACKEND}/users/favorites`, data, {
-                headers: {'Authorization': `Bearer ${token}`}
-            })
-            setAddFavorite(true)
-
         } catch (error) {
             console.error(error)
         }
