@@ -36,7 +36,10 @@ const Favorite = () => {
 
     const deleteMovie = (movieId) => {
         axios.delete(`${URL_BACKEND}/users/favorites/${movieId}`, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then(() => setFavoriteMovies(prevMovies => prevMovies.filter(movie => movie.id !== movieId)))
+            .then(() => {
+                setFavoriteMovies(prevMovies => prevMovies.filter(movie => movie.id !== movieId))
+                localStorage.setItem(`favoriteStatus-${movieId}`, 'false')
+            })
             .catch(error => {
                 console.error('Error al eliminar la película:', error)
             })

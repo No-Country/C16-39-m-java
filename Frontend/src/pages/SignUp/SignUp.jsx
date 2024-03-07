@@ -83,6 +83,10 @@ const SignUp = () => {
                             id="name"
                             {...register('name', {
                                 required: 'Este campo es obligatorio',
+                                pattern: {
+                                    value: /^[a-zA-Z\s]+$/,
+                                    message: 'El nombre no debe tener números ni caracteres especiales.',
+                                },
                                 minLength: { value: 3, message: 'El nombre debe tener entre 3 y 25 caracteres' },
                                 maxLength: { value: 25, message: 'El nombre no debe superar los 25 caracteres' },
                             })}
@@ -102,6 +106,7 @@ const SignUp = () => {
                                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                     message: 'Correo electrónico inválido',
                                 },
+                                maxLength: { value: 50, message: 'El email no debe superar los 50 caracteres' },
                             })}
                         />
                         <span className='text-xs text-start w-full text-red-600 pb-3 xl:text-sm'>{errors.email && errors.email.message}</span>
