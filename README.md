@@ -42,4 +42,4 @@ Note: Every project has its own README.md file with the instructions to run the 
 - [movie-pulse-api](https://movies-apirest-c77e9f5e2ba2.herokuapp.com/swagger-ui/index.html)
 
 ## Frontend Demo 👨‍💻
-- [movie-pulse](https://c16-39-m-java.vercel.app)
+- [movie-pulse](https://c16-39-m-java.vercel.app) 
