@@ -48,16 +48,15 @@ const Login = () => {
     }
   };
 
-
   return (
-    <div className="w-full flex items-center justify-center h-screen font-poppins">
+    <div className="flex items-center justify-center h-screen font-poppins">
+      
+      <div className="w-1/2 bg-opacity-95 p-6 rounded shadow flex flex-col items-center">
 
-      <div className="w-full lg:w-1/2 xl:w-1/2 bg-opacity-95 p-6 rounded flex flex-col items-center">
-
-        <img src={logo4} alt="Logo" className="absolute top-0 left-0 w-34 h-32" />
+      <img src={logo4} alt="Logo" className="absolute top-0 left-0 w-34 h-32" />
 
         <h2 className="text-3xl mb-4 text-center text-white -translate-y-10">
-          Bienvenido de nuevo
+          Bienvenido/a de nuevo
         </h2>
         <p className="mb-4 text-center text-white text-opacity-50  -translate-y-8">
           Por favor ingrese sus datos
