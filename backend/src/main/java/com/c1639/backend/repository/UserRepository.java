@@ -1,4 +1,17 @@
 package com.c1639.backend.repository;
 
-public class UserRepository {
+import com.c1639.backend.model.movie.Movie;
+import com.c1639.backend.model.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    UserDetails findByEmailAndActiveTrue(String email);
+
+    boolean existsByEmailAndActiveTrue(String email);
+
 }
